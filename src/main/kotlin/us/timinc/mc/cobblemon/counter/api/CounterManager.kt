@@ -1,0 +1,51 @@
+package us.timinc.mc.cobblemon.counter.api
+
+import com.cobblemon.mod.common.api.storage.player.InstancedPlayerData
+import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.PrimitiveCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
+import net.minecraft.resources.ResourceLocation
+import us.timinc.mc.cobblemon.counter.CounterMod
+import java.util.*
+
+class CounterManager(
+    override val uuid: UUID,
+    override val counters: Map<CounterType, Counter> = CounterRegistry.counterTypes.associateWith { Counter() },
+) : AbstractCounterManager(), InstancedPlayerData {
+    companion object {
+        val CODEC: Codec<CounterManager> = RecordCodecBuilder.create { instance ->
+            instance.group(PrimitiveCodec.STRING.fieldOf("uuid").forGetter { it.uuid.toString() },
+                Codec.unboundedMap(PrimitiveCodec.STRING, Counter.CODEC).fieldOf("counters").forGetter { manager ->
+                    manager.counters.keys.map { key -> key.type }
+                        .associateWith { key -> manager.counters[CounterType.entries.find { it.type == key }]!!.clone() }
+                }).apply(instance) { uuid, counters ->
+                CounterManager(UUID.fromString(uuid), counters.keys.map { key ->
+                    CounterType.entries.find { it.type == key }!!
+                }.associateWith { key -> counters[key.type]!!.clone() })
+            }
+        }
+    }
+
+    fun getCounter(counterType: CounterType): Counter {
+        return counters[counterType]
+            ?: throw Error("${counterType.type} was not registered with the CounterRegistry before ")
+    }
+
+    fun record(speciesId: ResourceLocation, formName: String, counterType: CounterType) {
+        val counter = getCounter(counterType)
+        val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
+        speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
+        counter.streak.add(speciesId, formName, CounterMod.config.breakStreakOnForm.contains(counterType.type))
+    }
+
+    override fun toClientData(): ClientCounterManager {
+        val cloned: MutableMap<CounterType, Counter> = mutableMapOf()
+        counters.forEach { (type, counter) -> cloned[type] = counter.clone() }
+        return ClientCounterManager(cloned)
+    }
+
+    fun record(pokemon: Pokemon, counterType: CounterType) {
+        record(pokemon.species.resourceIdentifier, pokemon.form.name, counterType)
+    }
+}
