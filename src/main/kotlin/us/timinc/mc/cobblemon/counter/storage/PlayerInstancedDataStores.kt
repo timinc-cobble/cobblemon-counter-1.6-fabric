@@ -6,9 +6,12 @@ import us.timinc.mc.cobblemon.counter.CounterMod
 import us.timinc.mc.cobblemon.counter.api.ClientCounterManager
 
 object PlayerInstancedDataStores {
-    val COUNTER = PlayerInstancedDataStoreTypes.register(PlayerInstancedDataStoreType(
-        CounterMod.modResource("counter"),
-        ClientCounterManager::decode,
-        ClientCounterManager::runAction
-    ))
+    val COUNTER = PlayerInstancedDataStoreTypes.register(
+        PlayerInstancedDataStoreType(
+            CounterMod.modResource("counter"),
+            ClientCounterManager::decode,
+            ClientCounterManager::runAction,
+            ClientCounterManager::runAction
+        )
+    )
 }

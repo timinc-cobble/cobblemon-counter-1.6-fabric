@@ -16,5 +16,4 @@ fun ServerPlayer.record(pokemon: Pokemon, counterType: CounterType) {
     CounterMod.debug("Player ${name.string}|$uuid ${counterType.type}'d a ${pokemon.species.resourceIdentifier}|${pokemon.form.name}")
     val counterManager = getCounterManager()
     counterManager.record(pokemon, counterType)
-    Cobblemon.playerDataManager.saveSingle(counterManager, PlayerInstancedDataStores.COUNTER)
 }

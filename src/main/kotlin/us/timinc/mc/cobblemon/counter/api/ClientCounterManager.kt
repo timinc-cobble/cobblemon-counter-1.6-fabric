@@ -2,10 +2,10 @@ package us.timinc.mc.cobblemon.counter.api
 
 import com.cobblemon.mod.common.api.storage.player.client.ClientInstancedPlayerData
 import com.cobblemon.mod.common.net.messages.client.SetClientPlayerDataPacket
-import com.cobblemon.mod.common.util.asIdentifierDefaultingNamespace
 import com.cobblemon.mod.common.util.readString
 import com.cobblemon.mod.common.util.writeString
 import net.minecraft.network.RegistryFriendlyByteBuf
+import us.timinc.mc.cobblemon.counter.CounterModClient
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 class ClientCounterManager(
@@ -28,9 +28,9 @@ class ClientCounterManager(
             return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map))
         }
 
-        fun runAction(clientInstancedPlayerData: ClientInstancedPlayerData) {
-            if (clientInstancedPlayerData !is ClientCounterManager) return
-            println("Updated")
+        fun runAction(data: ClientInstancedPlayerData) {
+            if (data !is ClientCounterManager) return
+            CounterModClient.clientCounterData = data
         }
     }
 }

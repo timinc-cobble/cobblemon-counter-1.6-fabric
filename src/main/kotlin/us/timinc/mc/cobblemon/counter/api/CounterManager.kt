@@ -1,12 +1,16 @@
 package us.timinc.mc.cobblemon.counter.api
 
+import com.cobblemon.mod.common.CobblemonNetwork.sendPacket
 import com.cobblemon.mod.common.api.storage.player.InstancedPlayerData
+import com.cobblemon.mod.common.net.messages.client.SetClientPlayerDataPacket
 import com.cobblemon.mod.common.pokemon.Pokemon
+import com.cobblemon.mod.common.util.getPlayer
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.PrimitiveCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.resources.ResourceLocation
 import us.timinc.mc.cobblemon.counter.CounterMod
+import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 import java.util.*
 
 class CounterManager(
@@ -37,6 +41,14 @@ class CounterManager(
         val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
         speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
         counter.streak.add(speciesId, formName, CounterMod.config.breakStreakOnForm.contains(counterType.type))
+
+        uuid.getPlayer()?.sendPacket(
+            SetClientPlayerDataPacket(
+                type = PlayerInstancedDataStores.COUNTER,
+                playerData = toClientData(),
+                isIncremental = true
+            )
+        )
     }
 
     override fun toClientData(): ClientCounterManager {
