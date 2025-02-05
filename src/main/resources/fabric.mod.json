@@ -13,6 +13,12 @@
         "adapter": "kotlin",
         "value": "us.timinc.mc.cobblemon.counter.CounterMod"
       }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "us.timinc.mc.cobblemon.counter.CounterModClient"
+      }
     ]
   },
   "depends": {

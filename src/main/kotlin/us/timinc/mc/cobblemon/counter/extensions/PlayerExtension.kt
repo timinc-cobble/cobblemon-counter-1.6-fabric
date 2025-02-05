@@ -1,6 +1,8 @@
 package us.timinc.mc.cobblemon.counter.extensions
 
 import com.cobblemon.mod.common.Cobblemon
+import com.cobblemon.mod.common.CobblemonNetwork.sendPacket
+import com.cobblemon.mod.common.net.messages.client.SetClientPlayerDataPacket
 import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.server.level.ServerPlayer
 import us.timinc.mc.cobblemon.counter.CounterMod
@@ -16,5 +18,12 @@ fun ServerPlayer.record(pokemon: Pokemon, counterType: CounterType) {
     CounterMod.debug("Player ${name.string}|$uuid ${counterType.type}'d a ${pokemon.species.resourceIdentifier}|${pokemon.form.name}")
     val counterManager = getCounterManager()
     counterManager.record(pokemon, counterType)
-    Cobblemon.playerDataManager.saveSingle(counterManager, PlayerInstancedDataStores.COUNTER)
+
+    sendPacket(
+        SetClientPlayerDataPacket(
+            type = PlayerInstancedDataStores.COUNTER,
+            playerData = counterManager.toClientData(),
+            isIncremental = true
+        )
+    )
 }
