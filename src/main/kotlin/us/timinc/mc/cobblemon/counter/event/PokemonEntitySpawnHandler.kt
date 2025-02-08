@@ -10,7 +10,7 @@ import us.timinc.mc.cobblemon.counter.extensions.record
 object PokemonEntitySpawnHandler {
     fun handle(spawnEvent: SpawnEvent<PokemonEntity>) {
         val ctx = spawnEvent.ctx
-        if(ctx !is FishingSpawningContext) return
+        if (ctx !is FishingSpawningContext) return
 
         val player = ctx.cause.entity
         if (player !is ServerPlayer) return

@@ -4,16 +4,14 @@ import com.cobblemon.mod.common.api.storage.player.client.ClientInstancedPlayerD
 import com.cobblemon.mod.common.net.messages.client.SetClientPlayerDataPacket
 import com.cobblemon.mod.common.util.readString
 import com.cobblemon.mod.common.util.writeString
-import com.mojang.authlib.minecraft.client.MinecraftClient
 import net.minecraft.client.Minecraft
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
-import us.timinc.mc.cobblemon.counter.CounterMod
 import us.timinc.mc.cobblemon.counter.CounterModClient
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 class ClientCounterManager(
-    override val counters: MutableMap<CounterType, Counter>
+    override val counters: MutableMap<CounterType, Counter>,
 ) : AbstractCounterManager(), ClientInstancedPlayerData {
     override fun encode(buf: RegistryFriendlyByteBuf) {
         buf.writeMap(

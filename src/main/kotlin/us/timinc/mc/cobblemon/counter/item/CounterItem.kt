@@ -21,7 +21,7 @@ class CounterItem(properties: Properties) : Item(properties) {
         itemStack: ItemStack,
         player: Player,
         livingEntity: LivingEntity,
-        interactionHand: InteractionHand
+        interactionHand: InteractionHand,
     ): InteractionResult {
         if (!player.level().isClientSide) return InteractionResult.PASS
         if (livingEntity !is PokemonEntity) return InteractionResult.PASS
@@ -39,7 +39,7 @@ class CounterItem(properties: Properties) : Item(properties) {
     override fun use(
         level: Level,
         player: Player,
-        interactionHand: InteractionHand
+        interactionHand: InteractionHand,
     ): InteractionResultHolder<ItemStack> {
         val heldItem = player.getItemInHand(interactionHand)
         if (!heldItem.`is`(CounterItems.COUNTER)) return InteractionResultHolder(InteractionResult.PASS, heldItem)

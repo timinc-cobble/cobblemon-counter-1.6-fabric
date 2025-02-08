@@ -5,7 +5,6 @@ import com.cobblemon.mod.common.api.scheduling.ScheduledTask
 import com.cobblemon.mod.common.api.scheduling.ServerTaskTracker
 import com.cobblemon.mod.common.api.storage.player.PlayerInstancedDataStoreType
 import net.fabricmc.api.ModInitializer
-import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
