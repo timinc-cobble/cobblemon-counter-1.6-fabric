@@ -9,11 +9,11 @@ import us.timinc.mc.cobblemon.counter.api.CounterType
 
 object CounterTooltipGenerator : TooltipGenerator() {
     override fun generateTooltip(stack: ItemStack, lines: MutableList<Component>): MutableList<Component> {
+        val resultLines = mutableListOf<Component>()
         if (!stack.`is`(CounterItems.COUNTER)) {
-            return lines
+            return resultLines
         }
 
-        val resultLines = mutableListOf<Component>()
         val mode = if (CounterItem.CLIENT_SPECIES === null) "streak" else "count"
         resultLines.add(Component.translatable("cobbled_counter.item.counter.tooltip.$mode"))
         CounterType.entries.forEach {
@@ -54,12 +54,12 @@ object CounterTooltipGenerator : TooltipGenerator() {
     }
 
     override fun generateAdditionalTooltip(stack: ItemStack, lines: MutableList<Component>): MutableList<Component> {
+        val resultLines = mutableListOf<Component>()
         if (!stack.`is`(CounterItems.COUNTER)) {
-            return lines
+            return resultLines
         }
 
         val otherMode = if (CounterItem.CLIENT_SPECIES === null) "count" else "streak"
-        val resultLines = mutableListOf<Component>()
         resultLines.add(Component.translatable("cobbled_counter.item.counter.tooltip.switch_mode_info.to_$otherMode"))
         return resultLines
     }
