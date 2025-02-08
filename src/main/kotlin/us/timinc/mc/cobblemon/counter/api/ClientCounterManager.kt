@@ -32,5 +32,22 @@ class ClientCounterManager(
             if (data !is ClientCounterManager) return
             CounterModClient.clientCounterData = data
         }
+
+        fun runActionIncremental(data: ClientInstancedPlayerData) {
+            val clientData = CounterModClient.clientCounterData
+
+            if (data !is ClientCounterManager) return
+            for ((counterType, counter) in data.counters.entries) {
+                val targetClientCounter = clientData.counters[counterType]
+                    ?: throw Error("Unregistered counter type sent by server ${counterType.type}")
+                for ((speciesId, speciesRecord) in counter.count) {
+                    val clientSpeciesRecord = targetClientCounter.count.getOrPut(speciesId, ::mutableMapOf)
+                    for ((formName, count) in speciesRecord) {
+                        clientSpeciesRecord[formName] = count
+                    }
+                }
+                targetClientCounter.streak = counter.streak
+            }
+        }
     }
 }

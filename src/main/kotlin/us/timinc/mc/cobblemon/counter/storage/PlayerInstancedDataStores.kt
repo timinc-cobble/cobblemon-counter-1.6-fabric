@@ -11,7 +11,7 @@ object PlayerInstancedDataStores {
             CounterMod.modResource("counter"),
             ClientCounterManager::decode,
             ClientCounterManager::runAction,
-            ClientCounterManager::runAction
+            ClientCounterManager::runActionIncremental
         )
     )
 }

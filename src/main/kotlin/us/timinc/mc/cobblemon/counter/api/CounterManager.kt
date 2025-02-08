@@ -42,10 +42,23 @@ class CounterManager(
         speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
         counter.streak.add(speciesId, formName, CounterMod.config.breakStreakOnForm.contains(counterType.type))
 
-        uuid.getPlayer()?.sendPacket(
+        val player = uuid.getPlayer() ?: return
+
+        val patchData = ClientCounterManager(
+            mutableMapOf(
+                counterType to Counter(
+                    mutableMapOf(
+                        speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
+                    ),
+                    counter.streak
+                )
+            )
+        )
+
+        player.sendPacket(
             SetClientPlayerDataPacket(
                 type = PlayerInstancedDataStores.COUNTER,
-                playerData = toClientData(),
+                playerData = patchData,
                 isIncremental = true
             )
         )
