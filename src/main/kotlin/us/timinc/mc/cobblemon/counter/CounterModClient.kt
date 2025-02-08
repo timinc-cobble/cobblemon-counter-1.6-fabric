@@ -6,12 +6,16 @@ import com.cobblemon.mod.common.platform.events.ClientPlayerEvent
 import com.cobblemon.mod.common.platform.events.PlatformEvents
 import net.fabricmc.api.ClientModInitializer
 import us.timinc.mc.cobblemon.counter.api.ClientCounterManager
+import us.timinc.mc.cobblemon.counter.config.ClientCounterConfig
+import us.timinc.mc.cobblemon.counter.config.ConfigBuilder
 import us.timinc.mc.cobblemon.counter.item.CounterItems
 import us.timinc.mc.cobblemon.counter.item.CounterTooltipGenerator
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 object CounterModClient : ClientModInitializer {
+    const val MOD_ID = "cobbled_counter_client"
     var clientCounterData: ClientCounterManager = ClientCounterManager(mutableMapOf())
+    var config: ClientCounterConfig = ConfigBuilder.load(ClientCounterConfig::class.java, MOD_ID)
 
     fun onLogin(event: ClientPlayerEvent.Login) {
         clientCounterData = ClientCounterManager(mutableMapOf())
