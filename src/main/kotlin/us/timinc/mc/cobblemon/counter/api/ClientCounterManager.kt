@@ -4,7 +4,11 @@ import com.cobblemon.mod.common.api.storage.player.client.ClientInstancedPlayerD
 import com.cobblemon.mod.common.net.messages.client.SetClientPlayerDataPacket
 import com.cobblemon.mod.common.util.readString
 import com.cobblemon.mod.common.util.writeString
+import com.mojang.authlib.minecraft.client.MinecraftClient
+import net.minecraft.client.Minecraft
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.chat.Component
+import us.timinc.mc.cobblemon.counter.CounterMod
 import us.timinc.mc.cobblemon.counter.CounterModClient
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
@@ -43,6 +47,21 @@ class ClientCounterManager(
                 for ((speciesId, speciesRecord) in counter.count) {
                     val clientSpeciesRecord = targetClientCounter.count.getOrPut(speciesId, ::mutableMapOf)
                     for ((formName, count) in speciesRecord) {
+                        if (CounterModClient.config.broadcast.contains(counterType.type)) {
+                            val player = Minecraft.getInstance().player ?: return
+                            player.sendSystemMessage(
+                                Component.translatable(
+                                    "cobbled_counter.broadcast.${counterType.type}",
+                                    Component.translatable("cobblemon.species.${speciesId.path}.name"),
+                                    if (formName == "Normal") "" else Component.translatable(
+                                        "cobbled_counter.item.counter.tooltip.form",
+                                        formName
+                                    ),
+                                    count,
+                                    counter.streak.count
+                                )
+                            )
+                        }
 
                         clientSpeciesRecord[formName] = count
                     }
