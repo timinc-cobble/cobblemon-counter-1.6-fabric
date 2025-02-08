@@ -12,7 +12,7 @@ import us.timinc.mc.cobblemon.counter.CounterMod
 
 class Counter(
     val count: MutableMap<ResourceLocation, MutableMap<String, Int>> = mutableMapOf(),
-    val streak: Streak = Streak(),
+    var streak: Streak = Streak(),
 ) {
     companion object {
         val CODEC: Codec<Counter> = RecordCodecBuilder.create { instance ->
@@ -21,7 +21,9 @@ class Counter(
             ).fieldOf("count").forGetter { it.count }, Streak.CODEC.fieldOf("streak").forGetter { it.streak })
                 .apply(instance) { count, streak ->
                     val clonedCount: MutableMap<ResourceLocation, MutableMap<String, Int>> = mutableMapOf()
-                    count.forEach { (speciesId, speciesRecord) -> clonedCount[speciesId] = speciesRecord.toMutableMap() }
+                    count.forEach { (speciesId, speciesRecord) ->
+                        clonedCount[speciesId] = speciesRecord.toMutableMap()
+                    }
                     Counter(clonedCount, streak)
                 }
         }

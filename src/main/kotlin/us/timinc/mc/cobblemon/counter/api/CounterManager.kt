@@ -31,21 +31,29 @@ class CounterManager(
         }
     }
 
-    fun getCounter(counterType: CounterType): Counter {
-        return counters[counterType]
-            ?: throw Error("${counterType.type} was not registered with the CounterRegistry before ")
-    }
-
     fun record(speciesId: ResourceLocation, formName: String, counterType: CounterType) {
         val counter = getCounter(counterType)
         val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
         speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
         counter.streak.add(speciesId, formName, CounterMod.config.breakStreakOnForm.contains(counterType.type))
 
-        uuid.getPlayer()?.sendPacket(
+        val player = uuid.getPlayer() ?: return
+
+        val patchData = ClientCounterManager(
+            mutableMapOf(
+                counterType to Counter(
+                    mutableMapOf(
+                        speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
+                    ),
+                    counter.streak
+                )
+            )
+        )
+
+        player.sendPacket(
             SetClientPlayerDataPacket(
                 type = PlayerInstancedDataStores.COUNTER,
-                playerData = toClientData(),
+                playerData = patchData,
                 isIncremental = true
             )
         )
@@ -59,22 +67,5 @@ class CounterManager(
 
     fun record(pokemon: Pokemon, counterType: CounterType) {
         record(pokemon.species.resourceIdentifier, pokemon.form.name, counterType)
-    }
-
-    fun getStreak(counterType: CounterType): Streak {
-        return getCounter(counterType).streak
-    }
-
-    fun getStreakCount(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
-        val streak = getStreak(counterType)
-        if (species === null) return streak.count
-        if (form === null) return if (species == streak.species) streak.count else 0
-        return if (species == streak.species && form == streak.form) streak.count else 0
-    }
-
-    fun getCount(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
-        val speciesRecord = getCounter(counterType).count[species] ?: return 0
-        if (form === null) return speciesRecord.values.fold(0) { acc, element -> acc + element }
-        return speciesRecord.getOrDefault(form, 0)
     }
 }
