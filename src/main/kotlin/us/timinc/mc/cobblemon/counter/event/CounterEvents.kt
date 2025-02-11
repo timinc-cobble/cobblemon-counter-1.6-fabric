@@ -9,4 +9,10 @@ object CounterEvents {
 
     @JvmField
     val RECORD_POST = EventObservable<RecordEvent.Post>()
+
+    @JvmField
+    val BREAK_STREAK_PRE = CancelableObservable<BreakStreakEvent.Pre>()
+
+    @JvmField
+    val BREAK_STREAK_POST = EventObservable<BreakStreakEvent.Post>()
 }
