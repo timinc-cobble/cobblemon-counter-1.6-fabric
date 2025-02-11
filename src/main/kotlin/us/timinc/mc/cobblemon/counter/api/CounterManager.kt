@@ -114,10 +114,14 @@ class CounterManager(
         val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
         speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
 
+        var streakChanged = false
         if (counter.streak.wouldBreak(speciesId, formName, CounterMod.config.breakStreakOnForm(counterType))) {
-            breakStreak(counterType, speciesId, formName, pokemon)
+            if (breakStreak(counterType, speciesId, formName, pokemon)) {
+                streakChanged = true
+            }
         } else {
             counter.streak.count++
+            streakChanged = true
         }
 
         val player = uuid.getPlayer() ?: return
@@ -127,7 +131,8 @@ class CounterManager(
                 counterType to Counter(
                     mutableMapOf(
                         speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
-                    ), counter.streak
+                    ),
+                    if (streakChanged) counter.streak else Streak()
                 )
             )
         )

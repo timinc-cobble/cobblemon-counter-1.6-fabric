@@ -1,7 +1,6 @@
 package us.timinc.mc.cobblemon.counter
 
 import com.cobblemon.mod.common.Cobblemon
-import com.cobblemon.mod.common.api.pokeball.PokeBalls
 import com.cobblemon.mod.common.api.scheduling.ScheduledTask
 import com.cobblemon.mod.common.api.scheduling.ServerTaskTracker
 import com.cobblemon.mod.common.api.storage.player.PlayerInstancedDataStoreType
@@ -11,7 +10,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import us.timinc.mc.cobblemon.counter.config.ConfigBuilder
 import us.timinc.mc.cobblemon.counter.config.CounterConfig
-import us.timinc.mc.cobblemon.counter.event.CounterEvents
 import us.timinc.mc.cobblemon.counter.event.handler.CounterEventHandlers
 import us.timinc.mc.cobblemon.counter.item.CounterItems
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
