@@ -1,15 +1,18 @@
 package us.timinc.mc.cobblemon.counter.event
 
-import com.cobblemon.mod.common.api.Priority
-import com.cobblemon.mod.common.api.events.CobblemonEvents
-import com.cobblemon.mod.common.platform.events.PlatformEvents
+import com.cobblemon.mod.common.api.reactive.CancelableObservable
+import com.cobblemon.mod.common.api.reactive.EventObservable
 
 object CounterEvents {
-    fun register() {
-        PlatformEvents.SERVER_STARTING.subscribe(Priority.LOWEST, ServerStartingHandler::handle)
-        CobblemonEvents.POKEMON_CAPTURED.subscribe(Priority.LOWEST, CatchHandler::handle)
-        CobblemonEvents.BATTLE_FAINTED.subscribe(Priority.LOWEST, BattleFaintedHandler::handle)
-        CobblemonEvents.FOSSIL_REVIVED.subscribe(Priority.LOWEST, FossilRevivedHandler::handle)
-        CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(Priority.LOWEST, PokemonEntitySpawnHandler::handle)
-    }
+    @JvmField
+    val RECORD_PRE = CancelableObservable<RecordEvent.Pre>()
+
+    @JvmField
+    val RECORD_POST = EventObservable<RecordEvent.Post>()
+
+    @JvmField
+    val BREAK_STREAK_PRE = CancelableObservable<BreakStreakEvent.Pre>()
+
+    @JvmField
+    val BREAK_STREAK_POST = EventObservable<BreakStreakEvent.Post>()
 }

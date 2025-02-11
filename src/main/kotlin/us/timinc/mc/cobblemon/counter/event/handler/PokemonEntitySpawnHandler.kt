@@ -1,4 +1,4 @@
-package us.timinc.mc.cobblemon.counter.event
+package us.timinc.mc.cobblemon.counter.event.handler
 
 import com.cobblemon.mod.common.api.events.entity.SpawnEvent
 import com.cobblemon.mod.common.api.spawning.context.FishingSpawningContext

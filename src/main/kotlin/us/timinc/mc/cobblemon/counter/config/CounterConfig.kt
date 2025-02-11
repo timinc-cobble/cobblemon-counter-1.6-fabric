@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package us.timinc.mc.cobblemon.counter.config
 
 import net.minecraft.resources.ResourceLocation
@@ -89,7 +91,8 @@ class CounterConfig {
         ),
     )
 
-    fun getFormOverride (fromSpecies: ResourceLocation, fromForm: String): FormOverride? {
-        return formOverrides.find { it.matches(fromSpecies, fromForm) }
-    }
+    fun getFormOverride(fromSpecies: ResourceLocation, fromForm: String): FormOverride? =
+        formOverrides.find { it.matches(fromSpecies, fromForm) }
+
+    fun breakStreakOnForm(counterType: CounterType): Boolean = breakStreakOnForm.contains(counterType.type)
 }
