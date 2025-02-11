@@ -10,6 +10,8 @@ import com.mojang.serialization.codecs.PrimitiveCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.resources.ResourceLocation
 import us.timinc.mc.cobblemon.counter.CounterMod
+import us.timinc.mc.cobblemon.counter.event.CounterEvents
+import us.timinc.mc.cobblemon.counter.event.RecordEvent
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 import java.util.*
 
@@ -36,10 +38,25 @@ class CounterManager(
         counter.streak = Streak()
     }
 
-    fun record(initialSpeciesId: ResourceLocation, initialFormName: String, counterType: CounterType) {
+    fun record(initialSpeciesId: ResourceLocation, initialFormName: String, counterType: CounterType, pokemon: Pokemon? = null) {
         val formOverride = CounterMod.config.getFormOverride(initialSpeciesId, initialFormName)
         val speciesId = if (formOverride === null) initialSpeciesId else ResourceLocation.parse(formOverride.toSpecies)
         val formName = if (formOverride === null) initialFormName else formOverride.toForm
+
+        var doRecord = false
+        CounterEvents.RECORD_PRE.postThen(
+            RecordEvent.Pre(
+                this,
+                counterType,
+                speciesId,
+                formName,
+                pokemon
+            ),
+            ifSucceeded = {
+                doRecord = true
+            }
+        )
+        if (!doRecord) return
 
         val counter = getCounter(counterType)
         val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
@@ -66,6 +83,16 @@ class CounterManager(
                 isIncremental = true
             )
         )
+
+        CounterEvents.RECORD_POST.post(
+            RecordEvent.Post(
+                this,
+                counterType,
+                speciesId,
+                formName,
+                pokemon
+            )
+        )
     }
 
     override fun toClientData(): ClientCounterManager {
@@ -75,6 +102,6 @@ class CounterManager(
     }
 
     fun record(pokemon: Pokemon, counterType: CounterType) {
-        record(pokemon.species.resourceIdentifier, pokemon.form.name, counterType)
+        record(pokemon.species.resourceIdentifier, pokemon.form.name, counterType, pokemon)
     }
 }
