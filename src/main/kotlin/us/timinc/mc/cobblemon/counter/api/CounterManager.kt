@@ -31,7 +31,11 @@ class CounterManager(
         }
     }
 
-    fun record(speciesId: ResourceLocation, formName: String, counterType: CounterType) {
+    fun record(initialSpeciesId: ResourceLocation, initialFormName: String, counterType: CounterType) {
+        val formOverride = CounterMod.config.getFormOverride(initialSpeciesId, initialFormName)
+        val speciesId = if (formOverride === null) initialSpeciesId else ResourceLocation.parse(formOverride.toSpecies)
+        val formName = if (formOverride === null) initialFormName else formOverride.toForm
+
         val counter = getCounter(counterType)
         val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
         speciesRecord[formName] = speciesRecord.getOrDefault(formName, 0) + 1
