@@ -40,6 +40,7 @@ class ClientCounterManager(
 
             val clientData = CounterModClient.clientCounterData
             for ((counterType, counter) in data.counters.entries) {
+                val changedStreak = counter.streak.species.toString() != "minecraft:empty"
                 val targetClientCounter = clientData.counters[counterType]
                     ?: throw Error("Unregistered counter type sent by server ${counterType.type}")
                 for ((speciesId, speciesRecord) in counter.count) {
@@ -56,7 +57,12 @@ class ClientCounterManager(
                                         formName
                                     ),
                                     count,
-                                    counter.streak.count
+                                    if (changedStreak) {
+                                        Component.translatable(
+                                            "cobbled_counter.broadcast.details.streak",
+                                            counter.streak.count
+                                        )
+                                    } else ""
                                 )
                             )
                         }
@@ -64,7 +70,7 @@ class ClientCounterManager(
                         clientSpeciesRecord[formName] = count
                     }
                 }
-                targetClientCounter.streak = counter.streak
+                if (changedStreak) targetClientCounter.streak = counter.streak
             }
         }
     }

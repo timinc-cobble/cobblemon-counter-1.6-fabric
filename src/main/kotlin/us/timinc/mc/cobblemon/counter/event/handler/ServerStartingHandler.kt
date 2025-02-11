@@ -1,4 +1,4 @@
-package us.timinc.mc.cobblemon.counter.event
+package us.timinc.mc.cobblemon.counter.event.handler
 
 import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.api.storage.player.factory.CachedPlayerDataStoreFactory

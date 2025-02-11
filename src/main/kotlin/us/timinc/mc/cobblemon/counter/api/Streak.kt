@@ -26,13 +26,8 @@ class Streak(
         return Streak(species, form, count)
     }
 
-    fun add(speciesId: ResourceLocation, formName: String, breakOnForm: Boolean) {
+    fun wouldBreak(speciesId: ResourceLocation, formName: String, breakOnForm: Boolean): Boolean {
         val usedForm = if (breakOnForm) formName else "untracked"
-        if (speciesId != species || form != usedForm) {
-            species = speciesId
-            form = usedForm
-            count = 0
-        }
-        count++
+        return speciesId != species || form != usedForm
     }
 }
