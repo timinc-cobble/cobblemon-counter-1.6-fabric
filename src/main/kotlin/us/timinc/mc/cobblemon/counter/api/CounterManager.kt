@@ -31,6 +31,11 @@ class CounterManager(
         }
     }
 
+    fun breakStreak(counterType: CounterType) {
+        val counter = getCounter(counterType)
+        counter.streak = Streak()
+    }
+
     fun record(initialSpeciesId: ResourceLocation, initialFormName: String, counterType: CounterType) {
         val formOverride = CounterMod.config.getFormOverride(initialSpeciesId, initialFormName)
         val speciesId = if (formOverride === null) initialSpeciesId else ResourceLocation.parse(formOverride.toSpecies)
