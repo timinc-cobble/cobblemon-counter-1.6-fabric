@@ -9,7 +9,7 @@ import java.util.*
 object BattleFaintedHandler {
     fun handle(event: BattleFaintedEvent) {
         val pokemon = event.killed.effectedPokemon
-        if (!pokemon.isWild()) {
+        if (!event.battle.isPvW || !pokemon.isWild()) {
             return
         }
         val players = event.battle.playerUUIDs.mapNotNull(UUID::getPlayer)
