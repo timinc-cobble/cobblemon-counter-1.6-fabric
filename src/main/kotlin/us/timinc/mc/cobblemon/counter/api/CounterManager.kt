@@ -27,9 +27,9 @@ class CounterManager(
                     manager.counters.keys.map { key -> key.type }
                         .associateWith { key -> manager.counters[CounterType.entries.find { it.type == key }]!!.clone() }
                 }).apply(instance) { uuid, counters ->
-                CounterManager(UUID.fromString(uuid), counters.keys.map { key ->
-                    CounterType.entries.find { it.type == key }!!
-                }.associateWith { key -> counters[key.type]!!.clone() })
+                CounterManager(UUID.fromString(uuid), CounterType.entries.associateWith { counterType ->
+                    counters[counterType.type]?.clone() ?: Counter()
+                })
             }
         }
     }
