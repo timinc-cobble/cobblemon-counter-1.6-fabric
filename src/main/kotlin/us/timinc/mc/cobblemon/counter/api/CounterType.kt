@@ -4,5 +4,6 @@ enum class CounterType(val type: String) {
     CAPTURE("capture"),
     KO("ko"),
     RESURRECTION("resurrection"),
-    FISH("fish")
+    FISH("fish"),
+    HATCH("hatch")
 }
