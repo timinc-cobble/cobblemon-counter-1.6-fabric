@@ -10,6 +10,7 @@ import com.mojang.serialization.codecs.PrimitiveCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.resources.ResourceLocation
 import us.timinc.mc.cobblemon.counter.CounterMod
+import us.timinc.mc.cobblemon.counter.api.Streak.Companion.IGNORED_SPECIES
 import us.timinc.mc.cobblemon.counter.event.BreakStreakEvent
 import us.timinc.mc.cobblemon.counter.event.CounterEvents
 import us.timinc.mc.cobblemon.counter.event.RecordEvent
@@ -132,7 +133,7 @@ class CounterManager(
                 counterType to Counter(
                     mutableMapOf(
                         speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
-                    ), if (streakChanged) counter.streak else Streak()
+                    ), if (streakChanged) counter.streak else Streak(IGNORED_SPECIES)
                 )
             )
         )
