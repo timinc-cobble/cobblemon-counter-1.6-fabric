@@ -21,8 +21,11 @@ abstract class AbstractCounterManager {
     }
 
     fun getCount(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
+        if (species == null) return getCounter(counterType).count.values.fold(0) { total, speciesEntry ->
+            total + speciesEntry.values.fold(0) { speciesTotal, speciesCount -> speciesTotal + speciesCount }
+        }
         val speciesRecord = getCounter(counterType).count[species] ?: return 0
-        if (form === null) return speciesRecord.values.fold(0) { acc, element -> acc + element }
+        if (form === null) return speciesRecord.values.fold(0) { speciesTotal, speciesCount -> speciesTotal + speciesCount }
         return speciesRecord.getOrDefault(form, 0)
     }
 }
