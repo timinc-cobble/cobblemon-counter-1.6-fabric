@@ -14,11 +14,11 @@ class CountSpawningCondition : AppendageCondition {
         val manager = player.getCounterManager()
 
         if (streaks !== null) streaks.forEach { req ->
-            if (manager.getStreakCount(req.type, req.speciesRl, req.form) < req.amount) return false
+            if (manager.getStreakScore(req.type, req.speciesRl, req.form) < req.amount) return false
         }
 
         if (counts !== null) counts.forEach { req ->
-            if (manager.getCount(req.type, req.speciesRl, req.form) < req.amount) return false
+            if (manager.getCountScore(req.type, req.speciesRl, req.form) < req.amount) return false
         }
 
         return true

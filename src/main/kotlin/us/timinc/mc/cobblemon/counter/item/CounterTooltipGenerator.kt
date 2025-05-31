@@ -34,7 +34,7 @@ object CounterTooltipGenerator : TooltipGenerator() {
                     }
                 } else {
                     count =
-                        CounterModClient.clientCounterData.getCount(
+                        CounterModClient.clientCounterData.getCountScore(
                             it,
                             CounterItem.CLIENT_SPECIES,
                             CounterItem.CLIENT_FORM

@@ -13,14 +13,14 @@ abstract class AbstractCounterManager {
         return getCounter(counterType).streak
     }
 
-    fun getStreakCount(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
+    fun getStreakScore(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
         val streak = getStreak(counterType)
         if (species === null) return streak.count
         if (form === null) return if (species == streak.species) streak.count else 0
         return if (species == streak.species && form == streak.form) streak.count else 0
     }
 
-    fun getCount(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
+    fun getCountScore(counterType: CounterType, species: ResourceLocation? = null, form: String? = null): Int {
         if (species == null) return getCounter(counterType).count.values.fold(0) { total, speciesEntry ->
             total + speciesEntry.values.fold(0) { speciesTotal, speciesCount -> speciesTotal + speciesCount }
         }
