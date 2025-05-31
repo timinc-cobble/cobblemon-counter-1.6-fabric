@@ -6,7 +6,7 @@ abstract class AbstractCounterManager {
     abstract val counters: Map<CounterType, Counter>
     fun getCounter(counterType: CounterType): Counter {
         return counters[counterType]
-            ?: throw Error("${counterType.type} was not registered with the CounterRegistry before ")
+            ?: throw Error("${counterType.type} was not registered with the CounterRegistry before")
     }
 
     fun getStreak(counterType: CounterType): Streak {
