@@ -10,6 +10,7 @@ import com.mojang.serialization.codecs.PrimitiveCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.resources.ResourceLocation
 import us.timinc.mc.cobblemon.counter.CounterMod
+import us.timinc.mc.cobblemon.counter.CounterMod.config
 import us.timinc.mc.cobblemon.counter.api.Streak.Companion.IGNORED_SPECIES
 import us.timinc.mc.cobblemon.counter.event.BreakStreakEvent
 import us.timinc.mc.cobblemon.counter.event.CounterEvents
@@ -135,7 +136,8 @@ class CounterManager(
                         speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
                     ), if (streakChanged) counter.streak else Streak(IGNORED_SPECIES)
                 )
-            )
+            ),
+            config.broadcast
         )
 
         player.sendPacket(
@@ -162,7 +164,8 @@ class CounterManager(
                 counterType to Counter(
                     mutableMapOf(), counter.streak
                 )
-            )
+            ),
+            config.broadcast
         )
 
         player.sendPacket(
@@ -186,7 +189,8 @@ class CounterManager(
                         speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
                     ), Streak(IGNORED_SPECIES)
                 )
-            )
+            ),
+            config.broadcast
         )
 
         player.sendPacket(
@@ -199,7 +203,7 @@ class CounterManager(
     override fun toClientData(): ClientCounterManager {
         val cloned: MutableMap<CounterType, Counter> = mutableMapOf()
         counters.forEach { (type, counter) -> cloned[type] = counter.clone() }
-        return ClientCounterManager(cloned)
+        return ClientCounterManager(cloned, emptySet())
     }
 
     /**

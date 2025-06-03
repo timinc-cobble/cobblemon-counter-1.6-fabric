@@ -12,6 +12,7 @@ import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 class ClientCounterManager(
     override val counters: MutableMap<CounterType, Counter>,
+    val broadcasts: Set<String>,
 ) : AbstractCounterManager(), ClientInstancedPlayerData {
     override fun encode(buf: RegistryFriendlyByteBuf) {
         buf.writeMap(
@@ -19,6 +20,9 @@ class ClientCounterManager(
             { _, key -> buf.writeString(key.type) },
             { _, value -> value.encode(buf) }
         )
+        buf.writeCollection(
+            broadcasts
+        ) { _, value -> buf.writeString(value) }
     }
 
     companion object {
@@ -27,7 +31,8 @@ class ClientCounterManager(
                 { buf.readString().let(CounterTypeRegistry::findByType) },
                 { Counter().also { it.decode(buf) } }
             )
-            return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map))
+            val broadcasts = buf.readList { buf.readString() }
+            return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map, broadcasts.toSet()))
         }
 
         fun runAction(data: ClientInstancedPlayerData) {
@@ -46,7 +51,9 @@ class ClientCounterManager(
                 for ((speciesId, speciesRecord) in counter.count) {
                     val clientSpeciesRecord = targetClientCounter.count.getOrPut(speciesId, ::mutableMapOf)
                     for ((formName, count) in speciesRecord) {
-                        if (CounterModClient.config.broadcast.contains(counterType.type)) {
+                        val clientBroadcastOn = CounterModClient.config.broadcast[counterType.type]
+                        val serverBroadcastOn = data.broadcasts.contains(counterType.type)
+                        if (clientBroadcastOn ?: serverBroadcastOn) {
                             val player = Minecraft.getInstance().player ?: return
                             player.sendSystemMessage(
                                 Component.translatable(

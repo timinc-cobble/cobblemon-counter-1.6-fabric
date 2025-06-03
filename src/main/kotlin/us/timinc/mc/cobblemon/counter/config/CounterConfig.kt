@@ -8,7 +8,8 @@ import us.timinc.mc.cobblemon.counter.api.CounterTypeRegistry
 
 class CounterConfig {
     val debug: Boolean = false
-    val breakStreakOnForm: List<String> = CounterTypeRegistry.types()
+    val breakStreakOnForm: Set<String> = CounterTypeRegistry.types().toSet()
+    val broadcast: Set<String> = CounterTypeRegistry.types().toSet()
     val formOverrides: List<FormOverride> = listOf(
         FormOverride(
             "cobblemon:aegislash",
