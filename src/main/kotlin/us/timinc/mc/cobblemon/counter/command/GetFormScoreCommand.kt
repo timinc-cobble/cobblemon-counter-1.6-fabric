@@ -15,8 +15,11 @@ import us.timinc.mc.cobblemon.counter.extensions.getCounterManager
 
 object GetFormScoreCommand : AbstractCommand() {
     override fun define(): LiteralArgumentBuilder<CommandSourceStack> = Commands.literal("get").then(
-        argument("species", SpeciesArgumentType.species()).then(argument("form", StringArgumentType.string()))
-            .executes(::execute)
+        argument("species", SpeciesArgumentType.species()).then(
+            argument("form", StringArgumentType.string()).executes(
+                ::execute
+            )
+        )
     )
 
     override fun run(
@@ -25,19 +28,21 @@ object GetFormScoreCommand : AbstractCommand() {
         counterType: CounterType,
         scoreType: ScoreType,
     ): Int {
-        val species = SpeciesArgumentType.getPokemon(ctx, "species").resourceIdentifier
+        val species = SpeciesArgumentType.getPokemon(ctx, "species")
         val formName = StringArgumentType.getString(ctx, "form")
 
         val manager = player.getCounterManager()
-        val score = scoreType.getScore(manager, counterType, species, formName)
+        val score = scoreType.getScore(manager, counterType, species.resourceIdentifier, formName)
 
         giveFeedback(
             Component.translatable(
-                "cobbled_counter.command.feedback.get_score",
+                "cobbled_counter.command.feedback.get_score.form",
                 player.name,
                 score,
                 Component.translatable("cobbled_counter.part.counter_type.${counterType.type}"),
-                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}")
+                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}"),
+                species.translatedName,
+                formName
             ), ctx
         )
 

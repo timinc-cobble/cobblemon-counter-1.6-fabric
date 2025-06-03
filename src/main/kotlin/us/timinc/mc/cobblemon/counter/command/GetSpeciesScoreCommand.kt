@@ -23,18 +23,19 @@ object GetSpeciesScoreCommand : AbstractCommand() {
         counterType: CounterType,
         scoreType: ScoreType,
     ): Int {
-        val species = SpeciesArgumentType.getPokemon(ctx, "species").resourceIdentifier
+        val species = SpeciesArgumentType.getPokemon(ctx, "species")
 
         val manager = player.getCounterManager()
-        val score = scoreType.getScore(manager, counterType, species)
+        val score = scoreType.getScore(manager, counterType, species.resourceIdentifier)
 
         giveFeedback(
             Component.translatable(
-                "cobbled_counter.command.feedback.get_score",
+                "cobbled_counter.command.feedback.get_score.species",
                 player.name,
                 score,
                 Component.translatable("cobbled_counter.part.counter_type.${counterType.type}"),
-                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}")
+                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}"),
+                species.translatedName
             ), ctx
         )
 
