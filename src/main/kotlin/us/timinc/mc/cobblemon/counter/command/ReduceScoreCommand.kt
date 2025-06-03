@@ -14,8 +14,8 @@ import us.timinc.mc.cobblemon.counter.api.CounterType
 import us.timinc.mc.cobblemon.counter.api.ScoreType
 import us.timinc.mc.cobblemon.counter.extensions.getCounterManager
 
-object SetScoreCommand : AbstractCommand() {
-    override fun define(): LiteralArgumentBuilder<CommandSourceStack> = literal("set").then(
+object ReduceScoreCommand : AbstractCommand() {
+    override fun define(): LiteralArgumentBuilder<CommandSourceStack> = literal("reduce").then(
         argument("species", SpeciesArgumentType.species()).then(
             argument("form", StringArgumentType.string()).then(
                 argument("score", IntegerArgumentType.integer(0)).executes(::execute)
@@ -34,7 +34,7 @@ object SetScoreCommand : AbstractCommand() {
         val score = IntegerArgumentType.getInteger(ctx, "score")
 
         val manager = player.getCounterManager()
-        scoreType.setScore(manager, counterType, species.resourceIdentifier, form, score)
+        scoreType.adjustScore(manager, counterType, species.resourceIdentifier, form, -score)
 
         return Command.SINGLE_SUCCESS
     }

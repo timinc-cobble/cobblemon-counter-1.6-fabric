@@ -28,6 +28,8 @@ object CounterCommands {
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
             registerOneWithPlayerAndType(dispatcher, GetScoreCommand.define())
             registerOneWithPlayerAndType(dispatcher, SetScoreCommand.define())
+            registerOneWithPlayerAndType(dispatcher, AddScoreCommand.define())
+            registerOneWithPlayerAndType(dispatcher, ReduceScoreCommand.define())
         }
     }
 
@@ -38,10 +40,10 @@ object CounterCommands {
         dispatcher.register(
             Commands.literal("count").then(
                 Commands.argument("player", EntityArgument.player()).then(
-                        Commands.argument("counterType", CounterTypeArgument.type()).then(
-                                Commands.argument("scoreType", ScoreTypeArgument.type()).then(command)
-                            )
+                    Commands.argument("counterType", CounterTypeArgument.type()).then(
+                        Commands.argument("scoreType", ScoreTypeArgument.type()).then(command)
                     )
+                )
             )
         )
     }
