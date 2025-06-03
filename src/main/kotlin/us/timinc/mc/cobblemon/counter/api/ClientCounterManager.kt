@@ -24,7 +24,7 @@ class ClientCounterManager(
     companion object {
         fun decode(buf: RegistryFriendlyByteBuf): SetClientPlayerDataPacket {
             val map = buf.readMap(
-                { buf.readString().let { type -> CounterType.entries.find { it.type == type }!! } },
+                { buf.readString().let(CounterTypeRegistry::findByType) },
                 { Counter().also { it.decode(buf) } }
             )
             return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map))
@@ -40,7 +40,7 @@ class ClientCounterManager(
 
             val clientData = CounterModClient.clientCounterData
             for ((counterType, counter) in data.counters.entries) {
-                val changedStreak = counter.streak.species.toString() != "minecraft:empty"
+                val changedStreak = counter.streak.changed()
                 val targetClientCounter = clientData.counters[counterType]
                     ?: throw Error("Unregistered counter type sent by server ${counterType.type}")
                 for ((speciesId, speciesRecord) in counter.count) {

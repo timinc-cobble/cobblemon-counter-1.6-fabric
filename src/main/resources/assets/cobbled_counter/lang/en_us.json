@@ -25,5 +25,18 @@
   "cobbled_counter.broadcast.ko": "Knocked out a %1$s%2$s (Count %3$s%4$s)",
   "cobbled_counter.broadcast.resurrection": "Resurrected a %1$s%2$s (Count %3$s%4$s)",
   "cobbled_counter.broadcast.fish": "Fished a %1$s%2$s (Count %3$s%4$s)",
-  "cobbled_counter.broadcast.hatch": "Hatched a %1$s%2$s (Count %3$s%4$s)"
+  "cobbled_counter.broadcast.hatch": "Hatched a %1$s%2$s (Count %3$s%4$s)",
+  "cobbled_counter.part.counter_type.capture": "Capture",
+  "cobbled_counter.part.counter_type.ko": "Knock Out",
+  "cobbled_counter.part.counter_type.resurrection": "Resurrection",
+  "cobbled_counter.part.counter_type.fish": "Fishing",
+  "cobbled_counter.part.counter_type.hatch": "Hatching",
+  "cobbled_counter.part.score_type.streak": "Streak",
+  "cobbled_counter.part.score_type.count": "Count",
+  "cobbled_counter.command.feedback.get_score": "%1$s %3$s %4$s: %2$s",
+  "cobbled_counter.command.feedback.get_score.species": "%1$s %5$s %3$s %4$s: %2$s",
+  "cobbled_counter.command.feedback.get_score.form": "%1$s %5$s %6$s %3$s %4$s: %2$s",
+  "cobbled_counter.command.feedback.add_score": "Added %2$s to %1$s %3$s %4$s",
+  "cobbled_counter.command.feedback.reduce_score": "Reduced %2$s by %1$s %3$s %4$s",
+  "cobbled_counter.command.feedback.set_score": "Set %1$s %3$s %4$s to %2$s"
 }

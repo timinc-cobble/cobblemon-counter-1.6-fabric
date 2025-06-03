@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.api.events.battles.BattleFaintedEvent
 import com.cobblemon.mod.common.util.getPlayer
 import us.timinc.mc.cobblemon.counter.api.CounterType
 import us.timinc.mc.cobblemon.counter.extensions.record
+import us.timinc.mc.cobblemon.counter.registry.CounterTypes
 import java.util.*
 
 object BattleFaintedHandler {
@@ -15,7 +16,7 @@ object BattleFaintedHandler {
         val players = event.battle.playerUUIDs.mapNotNull(UUID::getPlayer)
 
         players.forEach { player ->
-            player.record(pokemon, CounterType.KO)
+            player.record(pokemon, CounterTypes.KO)
         }
     }
 }
