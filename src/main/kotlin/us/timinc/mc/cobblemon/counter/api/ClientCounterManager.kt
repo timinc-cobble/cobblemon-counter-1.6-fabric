@@ -24,7 +24,7 @@ class ClientCounterManager(
     companion object {
         fun decode(buf: RegistryFriendlyByteBuf): SetClientPlayerDataPacket {
             val map = buf.readMap(
-                { buf.readString().let { type -> CounterType.entries.find { it.type == type }!! } },
+                { buf.readString().let(CounterTypeRegistry::findByType) },
                 { Counter().also { it.decode(buf) } }
             )
             return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map))

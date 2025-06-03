@@ -19,16 +19,16 @@ import java.util.*
 
 class CounterManager(
     override val uuid: UUID,
-    override val counters: Map<CounterType, Counter> = CounterRegistry.counterTypes.associateWith { Counter() },
+    override val counters: Map<CounterType, Counter> = CounterTypeRegistry.counterTypes().associateWith { Counter() },
 ) : AbstractCounterManager(), InstancedPlayerData {
     companion object {
         val CODEC: Codec<CounterManager> = RecordCodecBuilder.create { instance ->
             instance.group(PrimitiveCodec.STRING.fieldOf("uuid").forGetter { it.uuid.toString() },
                 Codec.unboundedMap(PrimitiveCodec.STRING, Counter.CODEC).fieldOf("counters").forGetter { manager ->
                     manager.counters.keys.map { key -> key.type }
-                        .associateWith { key -> manager.counters[CounterType.entries.find { it.type == key }]!!.clone() }
+                        .associateWith { key -> manager.counters[CounterTypeRegistry.findByType(key)]!!.clone() }
                 }).apply(instance) { uuid, counters ->
-                CounterManager(UUID.fromString(uuid), CounterType.entries.associateWith { counterType ->
+                CounterManager(UUID.fromString(uuid), CounterTypeRegistry.counterTypes().associateWith { counterType ->
                     counters[counterType.type]?.clone() ?: Counter()
                 })
             }

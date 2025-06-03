@@ -10,11 +10,14 @@ import net.fabricmc.api.ModInitializer
 import net.minecraft.resources.ResourceLocation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import us.timinc.mc.cobblemon.counter.command.CounterCommands
 import us.timinc.mc.cobblemon.counter.config.ConfigBuilder
 import us.timinc.mc.cobblemon.counter.config.CounterConfig
 import us.timinc.mc.cobblemon.counter.event.handler.CounterEventHandlers
 import us.timinc.mc.cobblemon.counter.item.CounterItems
-import us.timinc.mc.cobblemon.counter.spawning_conditions.CountSpawningCondition
+import us.timinc.mc.cobblemon.counter.registry.CounterTypes
+import us.timinc.mc.cobblemon.counter.registry.ScoreTypes
+import us.timinc.mc.cobblemon.counter.spawningconditions.CountSpawningCondition
 import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 object CounterMod : ModInitializer {
@@ -29,6 +32,9 @@ object CounterMod : ModInitializer {
     override fun onInitialize() {
         CounterEventHandlers.register()
         CounterItems.register()
+        CounterCommands.register()
+        CounterTypes
+        ScoreTypes
         AppendageCondition.registerAppendage(SpawningCondition::class.java, CountSpawningCondition::class.java)
         saveTasks[PlayerInstancedDataStores.COUNTER] = ScheduledTask.Builder()
             .execute { Cobblemon.playerDataManager.saveAllOfOneType(PlayerInstancedDataStores.COUNTER) }

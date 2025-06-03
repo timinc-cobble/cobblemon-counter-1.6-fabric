@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import us.timinc.mc.cobblemon.counter.CounterModClient
 import us.timinc.mc.cobblemon.counter.api.CounterType
+import us.timinc.mc.cobblemon.counter.api.CounterTypeRegistry
 
 object CounterTooltipGenerator : TooltipGenerator() {
     override fun generateTooltip(stack: ItemStack, lines: MutableList<Component>): MutableList<Component> {
@@ -17,7 +18,7 @@ object CounterTooltipGenerator : TooltipGenerator() {
         try {
             val mode = if (CounterItem.CLIENT_SPECIES === null) "streak" else "count"
             resultLines.add(Component.translatable("cobbled_counter.item.counter.tooltip.$mode"))
-            CounterType.entries.forEach {
+            CounterTypeRegistry.counterTypes().forEach {
                 val count: Int
                 val species: ResourceLocation
                 val form: String

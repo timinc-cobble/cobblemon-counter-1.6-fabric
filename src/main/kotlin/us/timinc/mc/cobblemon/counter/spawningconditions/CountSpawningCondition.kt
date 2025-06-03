@@ -1,4 +1,4 @@
-package us.timinc.mc.cobblemon.counter.spawning_conditions
+package us.timinc.mc.cobblemon.counter.spawningconditions
 
 import com.cobblemon.mod.common.api.spawning.condition.AppendageCondition
 import com.cobblemon.mod.common.api.spawning.context.SpawningContext
