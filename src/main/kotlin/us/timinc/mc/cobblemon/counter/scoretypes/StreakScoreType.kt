@@ -12,4 +12,14 @@ class StreakScoreType(type: String) : ScoreType(type) {
         species: ResourceLocation?,
         formName: String?,
     ): Int = manager.getStreakScore(counterType, species, formName)
+
+    override fun setScore(
+        manager: CounterManager,
+        counterType: CounterType,
+        species: ResourceLocation,
+        formName: String,
+        score: Int,
+    ) {
+        manager.setStreakScore(counterType, species, formName, score)
+    }
 }

@@ -9,4 +9,12 @@ abstract class ScoreType(val type: String) {
         species: ResourceLocation? = null,
         formName: String? = null,
     ): Int
+
+    abstract fun setScore(
+        manager: CounterManager,
+        counterType: CounterType,
+        species: ResourceLocation,
+        formName: String,
+        score: Int,
+    )
 }

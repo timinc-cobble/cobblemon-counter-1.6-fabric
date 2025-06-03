@@ -1,6 +1,7 @@
 package us.timinc.mc.cobblemon.counter.command
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.network.chat.Component
@@ -11,7 +12,7 @@ import us.timinc.mc.cobblemon.counter.extensions.getCounterManager
 
 object GetScoreCommand : AbstractCommand() {
     override fun define(): LiteralArgumentBuilder<CommandSourceStack> =
-        LiteralArgumentBuilder.literal<CommandSourceStack?>("get").executes(::execute)
+        literal<CommandSourceStack>("get").executes(::execute)
 
     override fun run(
         ctx: CommandContext<CommandSourceStack>,

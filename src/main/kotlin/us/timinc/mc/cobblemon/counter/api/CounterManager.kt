@@ -151,6 +151,51 @@ class CounterManager(
         )
     }
 
+    fun setStreakScore(counterType: CounterType, speciesId: ResourceLocation, formName: String, score: Int) {
+        val player = uuid.getPlayer() ?: return
+
+        val counter = getCounter(counterType)
+        counter.streak = Streak(speciesId, formName, score)
+
+        val patchData = ClientCounterManager(
+            mutableMapOf(
+                counterType to Counter(
+                    mutableMapOf(), counter.streak
+                )
+            )
+        )
+
+        player.sendPacket(
+            SetClientPlayerDataPacket(
+                type = PlayerInstancedDataStores.COUNTER, playerData = patchData, isIncremental = true
+            )
+        )
+    }
+
+    fun setCountScore(counterType: CounterType, speciesId: ResourceLocation, formName: String, score: Int) {
+        val player = uuid.getPlayer() ?: return
+
+        val counter = getCounter(counterType)
+        val speciesRecord = counter.count.getOrPut(speciesId) { mutableMapOf() }
+        speciesRecord[formName] = score
+
+        val patchData = ClientCounterManager(
+            mutableMapOf(
+                counterType to Counter(
+                    mutableMapOf(
+                        speciesId to mutableMapOf(formName to speciesRecord[formName]!!)
+                    ), Streak(IGNORED_SPECIES)
+                )
+            )
+        )
+
+        player.sendPacket(
+            SetClientPlayerDataPacket(
+                type = PlayerInstancedDataStores.COUNTER, playerData = patchData, isIncremental = true
+            )
+        )
+    }
+
     override fun toClientData(): ClientCounterManager {
         val cloned: MutableMap<CounterType, Counter> = mutableMapOf()
         counters.forEach { (type, counter) -> cloned[type] = counter.clone() }

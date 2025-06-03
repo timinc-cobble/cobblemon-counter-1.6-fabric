@@ -12,4 +12,14 @@ class CountScoreType(type: String) : ScoreType(type) {
         species: ResourceLocation?,
         formName: String?,
     ): Int = manager.getCountScore(counterType, species, formName)
+
+    override fun setScore(
+        manager: CounterManager,
+        counterType: CounterType,
+        species: ResourceLocation,
+        formName: String,
+        score: Int,
+    ) {
+        manager.setCountScore(counterType, species, formName, score)
+    }
 }
