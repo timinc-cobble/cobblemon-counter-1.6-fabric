@@ -27,6 +27,8 @@ object CounterCommands {
 
         CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
             registerOneWithPlayerAndType(dispatcher, GetScoreCommand.define())
+            registerOneWithPlayerAndType(dispatcher, GetSpeciesScoreCommand.define())
+            registerOneWithPlayerAndType(dispatcher, GetFormScoreCommand.define())
             registerOneWithPlayerAndType(dispatcher, SetScoreCommand.define())
             registerOneWithPlayerAndType(dispatcher, AddScoreCommand.define())
             registerOneWithPlayerAndType(dispatcher, ReduceScoreCommand.define())
