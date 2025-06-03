@@ -27,13 +27,14 @@ object CounterMod : ModInitializer {
     val saveTasks = mutableMapOf<PlayerInstancedDataStoreType, ScheduledTask>()
 
     private var logger: Logger = LogManager.getLogger(MOD_ID)
-    var config: CounterConfig = ConfigBuilder.load(CounterConfig::class.java, MOD_ID)
+    lateinit var config: CounterConfig
 
     override fun onInitialize() {
         CounterEventHandlers.register()
         CounterItems.register()
         CounterCommands.register()
         CounterTypes
+        config = ConfigBuilder.load(CounterConfig::class.java, MOD_ID)
         ScoreTypes
         AppendageCondition.registerAppendage(SpawningCondition::class.java, CountSpawningCondition::class.java)
         saveTasks[PlayerInstancedDataStores.COUNTER] = ScheduledTask.Builder()

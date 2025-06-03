@@ -14,11 +14,11 @@ import us.timinc.mc.cobblemon.counter.storage.PlayerInstancedDataStores
 
 object CounterModClient : ClientModInitializer {
     const val MOD_ID = "cobbled_counter_client"
-    var clientCounterData: ClientCounterManager = ClientCounterManager(mutableMapOf())
+    var clientCounterData: ClientCounterManager = ClientCounterManager(mutableMapOf(), emptySet())
     var config: ClientCounterConfig = ConfigBuilder.load(ClientCounterConfig::class.java, MOD_ID)
 
     fun onLogin(event: ClientPlayerEvent.Login) {
-        clientCounterData = ClientCounterManager(mutableMapOf())
+        clientCounterData = ClientCounterManager(mutableMapOf(), emptySet())
     }
 
     override fun onInitializeClient() {
