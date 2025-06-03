@@ -9,6 +9,7 @@ import com.mojang.brigadier.context.CommandContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands.argument
 import net.minecraft.commands.Commands.literal
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import us.timinc.mc.cobblemon.counter.api.CounterType
 import us.timinc.mc.cobblemon.counter.api.ScoreType
@@ -35,6 +36,16 @@ object SetScoreCommand : AbstractCommand() {
 
         val manager = player.getCounterManager()
         scoreType.setScore(manager, counterType, species.resourceIdentifier, form, score)
+
+        giveFeedback(
+            Component.translatable(
+                "cobbled_counter.command.feedback.set_score",
+                player.name,
+                score,
+                Component.translatable("cobbled_counter.part.counter_type.${counterType.type}"),
+                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}")
+            ), ctx
+        )
 
         return Command.SINGLE_SUCCESS
     }

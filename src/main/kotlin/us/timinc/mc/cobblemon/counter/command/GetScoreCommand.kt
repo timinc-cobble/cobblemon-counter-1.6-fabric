@@ -25,9 +25,11 @@ object GetScoreCommand : AbstractCommand() {
 
         giveFeedback(
             Component.translatable(
-                "cobbled_counter.command.feedback.get_score.${counterType.type}.${scoreType.type}",
+                "cobbled_counter.command.feedback.get_score",
                 player.name,
-                score
+                score,
+                Component.translatable("cobbled_counter.part.counter_type.${counterType.type}"),
+                Component.translatable("cobbled_counter.part.score_type.${scoreType.type}")
             ), ctx
         )
 
