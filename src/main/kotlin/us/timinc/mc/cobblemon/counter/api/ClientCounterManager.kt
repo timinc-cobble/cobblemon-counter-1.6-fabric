@@ -32,7 +32,10 @@ class ClientCounterManager(
                 { Counter().also { it.decode(buf) } }
             )
             val broadcasts = buf.readList { buf.readString() }
-            return SetClientPlayerDataPacket(PlayerInstancedDataStores.COUNTER, ClientCounterManager(map, broadcasts.toSet()))
+            return SetClientPlayerDataPacket(
+                PlayerInstancedDataStores.COUNTER,
+                ClientCounterManager(map, broadcasts.toSet())
+            )
         }
 
         fun runAction(data: ClientInstancedPlayerData) {

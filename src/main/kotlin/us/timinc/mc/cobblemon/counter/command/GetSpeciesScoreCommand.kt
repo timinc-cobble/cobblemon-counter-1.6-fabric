@@ -14,8 +14,8 @@ import us.timinc.mc.cobblemon.counter.extensions.getCounterManager
 
 object GetSpeciesScoreCommand : AbstractCommand() {
     override fun define(): LiteralArgumentBuilder<CommandSourceStack> = literal("get").then(
-            argument("species", SpeciesArgumentType.species()).executes(::execute)
-        )
+        argument("species", SpeciesArgumentType.species()).executes(::execute)
+    )
 
     override fun run(
         ctx: CommandContext<CommandSourceStack>,

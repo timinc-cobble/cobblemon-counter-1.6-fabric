@@ -9,8 +9,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.SharedSuggestionProvider
 import net.minecraft.network.chat.Component
-import us.timinc.mc.cobblemon.counter.api.CounterTypeRegistry
 import us.timinc.mc.cobblemon.counter.api.CounterType
+import us.timinc.mc.cobblemon.counter.api.CounterTypeRegistry
 import java.util.concurrent.CompletableFuture
 
 class CounterTypeArgument : ArgumentType<CounterType> {
@@ -33,7 +33,7 @@ class CounterTypeArgument : ArgumentType<CounterType> {
 
     override fun <S> listSuggestions(
         context: CommandContext<S>,
-        builder: SuggestionsBuilder
+        builder: SuggestionsBuilder,
     ): CompletableFuture<Suggestions> =
         SharedSuggestionProvider.suggest(CounterTypeRegistry.types(), builder)
 }

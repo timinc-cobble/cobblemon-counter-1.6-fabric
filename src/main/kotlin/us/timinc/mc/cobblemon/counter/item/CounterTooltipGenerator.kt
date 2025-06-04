@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import us.timinc.mc.cobblemon.counter.CounterModClient
-import us.timinc.mc.cobblemon.counter.api.CounterType
 import us.timinc.mc.cobblemon.counter.api.CounterTypeRegistry
 
 object CounterTooltipGenerator : TooltipGenerator() {
