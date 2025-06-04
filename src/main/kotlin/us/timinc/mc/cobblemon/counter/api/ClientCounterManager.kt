@@ -59,7 +59,7 @@ class ClientCounterManager(
                                 Component.translatable(
                                     "cobbled_counter.broadcast.${counterType.type}",
                                     Component.translatable("cobblemon.species.${speciesId.path}.name"),
-                                    if (formName == "Normal") "" else Component.translatable(
+                                    if (formName == "Normal" || formName == "untracked") "" else Component.translatable(
                                         "cobbled_counter.item.counter.tooltip.form",
                                         formName
                                     ),
